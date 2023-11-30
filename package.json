@@ -11,6 +11,7 @@
     "dev:remix": "remix dev --manual -c \"node --require ./mocks ./build/server.js\"",
     "docker": "docker compose up -d",
     "format": "prettier --write .",
+    "format:check": "prettier --check .",
     "lint": "eslint --cache --cache-location ./node_modules/.cache/eslint .",
     "setup": "prisma generate && prisma migrate deploy && prisma db seed",
     "start": "cross-env NODE_ENV=production node ./build/server.js",
