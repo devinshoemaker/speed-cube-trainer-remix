@@ -3,7 +3,7 @@ import { expect, test } from "@playwright/test";
 
 import { cleanupUser, visitAndCheck } from "./lib/utils";
 
-test.describe("smoke tests", () => {
+test.describe("Authentication", () => {
   let email = "";
 
   test.afterEach(async ({ page }) => {
@@ -20,7 +20,7 @@ test.describe("smoke tests", () => {
     await visitAndCheck("/", page);
     await page.getByRole("link", { name: /sign up/i }).click();
 
-    await page.getByRole("textbox", { name: /email/i }).type(loginForm.email);
+    await page.getByRole("textbox", { name: /email/i }).fill(loginForm.email);
     await page.getByLabel(/password/i).fill(loginForm.password);
     await page.getByRole("button", { name: /create account/i }).click();
 
