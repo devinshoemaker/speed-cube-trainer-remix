@@ -125,7 +125,7 @@ jobs:
         run: npm run build
 
       - name: Playwright run
-        run: npm run test:e2e:run
+        run: npm run e2e
 
   # deploy:
   #   name: Deploy
