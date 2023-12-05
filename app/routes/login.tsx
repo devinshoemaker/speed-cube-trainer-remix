@@ -139,7 +139,7 @@ export default function LoginPage() {
               Sign up
             </Link>
           </div>
-        </div> 
+        </div>
 
         {actionData?.errors?.email ? (
           <p className="mt-4 p-4 bg-foreground/10 text-foreground text-center">

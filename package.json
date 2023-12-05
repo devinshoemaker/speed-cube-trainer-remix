@@ -4,7 +4,7 @@
   "sideEffects": false,
   "scripts": {
     "build": "remix build",
-    "ci": "npm run format && npm run lint && npm run typecheck && npm run test -- --run && npm run test:e2e:run",
+    "ci": "npm run format && npm run lint && npm run typecheck && npm run test -- --run && npm run e2e",
     "dev": "remix dev -c \"npm run dev:serve\"",
     "dev:serve": "binode --require ./mocks -- @remix-run/serve:remix-serve ./build/index.js",
     "format": "prettier --write .",

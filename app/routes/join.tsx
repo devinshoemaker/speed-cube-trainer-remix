@@ -144,7 +144,7 @@ export default function Join() {
               Sign in
             </Link>
           </div>
-        </div> 
+        </div>
 
         {actionData?.errors?.email ? (
           <p className="mt-4 p-4 bg-foreground/10 text-foreground text-center">
