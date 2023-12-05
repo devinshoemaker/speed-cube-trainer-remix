@@ -11,6 +11,6 @@ export async function createUser(email: string, page: Page) {
 
   await page.getByRole("textbox", { name: /email/i }).fill(email);
   await page.getByLabel(/password/i).fill(password);
-  await page.getByRole("button", { name: /create account/i }).click();
+  await page.getByRole("button", { name: /Sign Up/i }).click();
   await expect(page.getByText(/View Notes/i)).toBeVisible();
 }
