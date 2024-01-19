@@ -12,6 +12,3 @@ node_modules
 /playwright/.cache/
 
 /coverage
-
-/prisma/data.db
-/prisma/data.db-journal
