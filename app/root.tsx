@@ -8,9 +8,12 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useLoaderData,
 } from "@remix-run/react";
+import clsx from "clsx";
+import { ThemeProvider, useTheme } from "remix-themes";
 
-import { getUser } from "~/session.server";
+import { getUser, themeSessionResolver } from "~/session.server";
 import stylesheet from "~/tailwind.css";
 
 import SideMenu from "./components/SideMenu";
@@ -21,12 +24,26 @@ export const links: LinksFunction = () => [
 ];
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
-  return json({ user: await getUser(request) });
+  const { getTheme } = await themeSessionResolver(request);
+  return json({ user: await getUser(request), theme: getTheme() });
 };
 
-export default function App() {
+// Wrap your app with ThemeProvider.
+// `specifiedTheme` is the stored theme in the session storage.
+// `themeAction` is the action name that's used to change the theme in the session storage.
+export default function AppWithProviders() {
+  const data = useLoaderData<typeof loader>();
   return (
-    <html lang="en" className="h-full">
+    <ThemeProvider specifiedTheme={data.theme} themeAction="/action/set-theme">
+      <App />
+    </ThemeProvider>
+  );
+}
+
+export function App() {
+  const [theme] = useTheme();
+  return (
+    <html lang="en" className={clsx(theme, "h-full")}>
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
