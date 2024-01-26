@@ -36,6 +36,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
   const passwordRequired = z
     .object({
+      email: z.string().email({ message: "Email is invalid" }),
       password: z.string().min(1, { message: "Password is required" }),
     })
     .safeParse(Object.fromEntries(formData));
