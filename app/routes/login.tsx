@@ -143,7 +143,7 @@ export default function LoginPage() {
                 Sign In with Email
               </Button>
               <Button>
-                <Link to="/join">Sign Up</Link>
+                <Link to="/register">Sign Up</Link>
               </Button>
               <div
                 className="flex h-8 items-end space-x-1"
