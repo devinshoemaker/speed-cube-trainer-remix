@@ -19,7 +19,7 @@ import { Icons } from "~/components/ui/icons";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import { cn } from "~/lib/utils";
-import { verifyLogin } from "~/models/user.server";
+import { createUser, getUserByEmail } from "~/models/user.server";
 import { createUserSession, getUserId } from "~/session.server";
 import { safeRedirect } from "~/utils";
 
@@ -32,7 +32,6 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 export const action = async ({ request }: ActionFunctionArgs) => {
   const formData = await request.formData();
   const redirectTo = safeRedirect(formData.get("redirectTo"), "/");
-  const remember = formData.get("remember");
 
   const passwordRequired = z
     .object({
@@ -54,18 +53,25 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
   if (parsedCredentials.success) {
     const { email, password } = parsedCredentials.data;
-    const user = await verifyLogin(email, password);
 
-    if (!user) {
+    const existingUser = await getUserByEmail(email);
+    if (existingUser) {
       return json(
-        { errors: { email: "Invalid email or password", password: null } },
+        {
+          errors: {
+            email: "A user already exists with this email",
+            password: null,
+          },
+        },
         { status: 400 },
       );
     }
 
+    const user = await createUser(email, password);
+
     return createUserSession({
       redirectTo,
-      remember: remember === "on" ? true : false,
+      remember: false,
       request,
       userId: user.id,
     });
@@ -74,11 +80,11 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   }
 };
 
-export const meta: MetaFunction = () => [{ title: "Login" }];
+export const meta: MetaFunction = () => [{ title: "Sign Up" }];
 
-export default function LoginPage() {
+export default function Join() {
   const [searchParams] = useSearchParams();
-  const redirectTo = searchParams.get("redirectTo") || "/notes";
+  const redirectTo = searchParams.get("redirectTo") ?? undefined;
   const actionData = useActionData<typeof action>();
   const errors = actionData?.errors;
   const navigation = useNavigation();
@@ -98,7 +104,9 @@ export default function LoginPage() {
     <main className="min-h-screen flex items-center justify-center">
       <div className="max-w-sm w-full space-y-4">
         <div id="header" className="flex flex-col space-y-2 text-center">
-          <h1 className="text-2xl font-semibold tracking-tight">Log In</h1>
+          <h1 className="text-2xl font-semibold tracking-tight">
+            Create an Account
+          </h1>
         </div>
 
         <div id="login-form" className={cn("grid gap-6")}>
@@ -140,10 +148,10 @@ export default function LoginPage() {
                 {pending ? (
                   <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
                 ) : null}
-                Sign In with Email
+                Sign Up with Email
               </Button>
               <Button>
-                <Link to="/register">Sign Up</Link>
+                <Link to="/login">Sign In</Link>
               </Button>
               <div
                 className="flex h-8 items-end space-x-1"
@@ -160,6 +168,24 @@ export default function LoginPage() {
             </div>
           </Form>
         </div>
+
+        <p id="tos" className="px-8 text-center text-sm text-muted-foreground">
+          By clicking continue, you agree to our{" "}
+          <Link
+            to="/terms"
+            className="underline underline-offset-4 hover:text-primary"
+          >
+            Terms of Service
+          </Link>{" "}
+          and{" "}
+          <Link
+            to="/privacy"
+            className="underline underline-offset-4 hover:text-primary"
+          >
+            Privacy Policy
+          </Link>
+          .
+        </p>
       </div>
     </main>
   );

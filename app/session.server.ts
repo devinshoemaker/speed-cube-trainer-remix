@@ -1,4 +1,5 @@
 import { createCookieSessionStorage, redirect } from "@remix-run/node";
+import { createThemeSessionResolver } from "remix-themes";
 import invariant from "tiny-invariant";
 
 import type { User } from "~/models/user.server";
@@ -95,3 +96,5 @@ export async function logout(request: Request) {
     },
   });
 }
+
+export const themeSessionResolver = createThemeSessionResolver(sessionStorage);

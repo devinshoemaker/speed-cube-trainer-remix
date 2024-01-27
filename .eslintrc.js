@@ -85,6 +85,8 @@ module.exports = {
             "newlines-between": "always",
           },
         ],
+        "@typescript-eslint/no-empty-interface": "off",
+        "react/prop-types": "off",
       },
     },
 
