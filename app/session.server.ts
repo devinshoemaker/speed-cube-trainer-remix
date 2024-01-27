@@ -97,4 +97,4 @@ export async function logout(request: Request) {
   });
 }
 
-export const themeSessionResolver = createThemeSessionResolver(sessionStorage)
+export const themeSessionResolver = createThemeSessionResolver(sessionStorage);
