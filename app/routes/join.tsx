@@ -4,10 +4,21 @@ import type {
   MetaFunction,
 } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
-import { Form, Link, useActionData, useSearchParams } from "@remix-run/react";
+import {
+  Form,
+  Link,
+  useActionData,
+  useNavigation,
+  useSearchParams,
+} from "@remix-run/react";
 import { useEffect, useRef } from "react";
 import { z } from "zod";
 
+import { Button } from "~/components/ui/button";
+import { Icons } from "~/components/ui/icons";
+import { Input } from "~/components/ui/input";
+import { Label } from "~/components/ui/label";
+import { cn } from "~/lib/utils";
 import { createUser, getUserByEmail } from "~/models/user.server";
 import { createUserSession, getUserId } from "~/session.server";
 import { safeRedirect } from "~/utils";
@@ -22,13 +33,21 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const formData = await request.formData();
   const redirectTo = safeRedirect(formData.get("redirectTo"), "/");
 
+  const passwordRequired = z
+    .object({
+      email: z.string().email({ message: "Email is invalid" }),
+      password: z.string().min(1, { message: "Password is required" }),
+    })
+    .safeParse(Object.fromEntries(formData));
+
+  if (!passwordRequired.success) {
+    return json({ errors: passwordRequired.error.formErrors.fieldErrors });
+  }
+
   const parsedCredentials = z
     .object({
       email: z.string().email({ message: "Email is invalid" }),
-      password: z
-        .string()
-        .min(1, { message: "Password is required" })
-        .min(6, { message: "Password is too short" }),
+      password: z.string().min(6, { message: "Password is too short" }),
     })
     .safeParse(Object.fromEntries(formData));
 
@@ -67,6 +86,9 @@ export default function Join() {
   const [searchParams] = useSearchParams();
   const redirectTo = searchParams.get("redirectTo") ?? undefined;
   const actionData = useActionData<typeof action>();
+  const errors = actionData?.errors;
+  const navigation = useNavigation();
+  const pending = navigation.state === "submitting";
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
 
@@ -79,79 +101,92 @@ export default function Join() {
   }, [actionData]);
 
   return (
-    <div className="flex-1 flex flex-col w-full px-8 sm:max-w-md justify-center gap-2">
-      <Form
-        className="animate-in flex-1 flex flex-col w-full justify-center gap-2 text-foreground"
-        method="post"
-      >
-        <label className="text-md" htmlFor="email">
-          Email
-        </label>
-        <input
-          className="rounded-md px-4 py-2 bg-inherit border mb-6"
-          name="email"
-          id="email"
-          placeholder="you@example.com"
-          required
-        />
-
-        <label className="text-md" htmlFor="password">
-          Password
-        </label>
-        <input
-          className="rounded-md px-4 py-2 bg-inherit border mb-6"
-          type="password"
-          name="password"
-          id="password"
-          placeholder="••••••••"
-        />
-
-        <input type="hidden" name="redirectTo" value={redirectTo} />
-        <button
-          className="bg-green-700 rounded-md px-4 py-2 text-foreground mb-2"
-          type="submit"
-        >
-          Sign Up
-        </button>
-
-        <div className="flex items-center justify-between">
-          <div className="flex items-center">
-            <input
-              id="remember"
-              name="remember"
-              type="checkbox"
-              className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-            />
-            <label htmlFor="remember" className="ml-2 block text-sm">
-              Remember me
-            </label>
-          </div>
-          <div className="text-center text-sm">
-            Don&apos;t have an account?{" "}
-            <Link
-              className="text-blue-500 underline"
-              to={{
-                pathname: "/login",
-                search: searchParams.toString(),
-              }}
-            >
-              Sign in
-            </Link>
-          </div>
+    <main className="min-h-screen flex items-center justify-center">
+      <div className="max-w-sm w-full space-y-4">
+        <div id="header" className="flex flex-col space-y-2 text-center">
+          <h1 className="text-2xl font-semibold tracking-tight">
+            Create an Account
+          </h1>
         </div>
 
-        {actionData?.errors?.email ? (
-          <p className="mt-4 p-4 bg-foreground/10 text-foreground text-center">
-            {actionData.errors.email}
-          </p>
-        ) : null}
+        <div id="login-form" className={cn("grid gap-6")}>
+          <Form method="post">
+            <div className="grid gap-2">
+              <div className="grid gap-1">
+                <Label className="sr-only" htmlFor="email">
+                  Email
+                </Label>
+                <Input
+                  id="email"
+                  name="email"
+                  placeholder="name@example.com"
+                  type="email"
+                  autoCapitalize="none"
+                  autoComplete="email"
+                  autoCorrect="off"
+                  disabled={pending}
+                />
+              </div>
+              <div className="grid gap-1">
+                <Label className="sr-only" htmlFor="password">
+                  Password
+                </Label>
+                <Input
+                  id="password"
+                  name="password"
+                  placeholder="password"
+                  type="password"
+                  autoCapitalize="none"
+                  autoComplete="password"
+                  autoCorrect="off"
+                  disabled={pending}
+                />
+              </div>
 
-        {actionData?.errors?.password ? (
-          <p className="mt-4 p-4 bg-foreground/10 text-foreground text-center">
-            {actionData.errors.password}
-          </p>
-        ) : null}
-      </Form>
-    </div>
+              <input type="hidden" name="redirectTo" value={redirectTo} />
+              <Button disabled={pending}>
+                {pending ? (
+                  <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+                ) : null}
+                Sign Up with Email
+              </Button>
+              <Button>
+                <Link to="/login">Sign In</Link>
+              </Button>
+              <div
+                className="flex h-8 items-end space-x-1"
+                aria-live="polite"
+                aria-atomic="true"
+              >
+                {errors?.email ? (
+                  <p className="text-sm text-red-500">{errors?.email}</p>
+                ) : null}
+                {errors?.password ? (
+                  <p className="text-sm text-red-500">{errors?.password}</p>
+                ) : null}
+              </div>
+            </div>
+          </Form>
+        </div>
+
+        <p id="tos" className="px-8 text-center text-sm text-muted-foreground">
+          By clicking continue, you agree to our{" "}
+          <Link
+            to="/terms"
+            className="underline underline-offset-4 hover:text-primary"
+          >
+            Terms of Service
+          </Link>{" "}
+          and{" "}
+          <Link
+            to="/privacy"
+            className="underline underline-offset-4 hover:text-primary"
+          >
+            Privacy Policy
+          </Link>
+          .
+        </p>
+      </div>
+    </main>
   );
 }
