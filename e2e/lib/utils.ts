@@ -1,5 +1,5 @@
 import { expect, Page } from '@playwright/test';
-import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
+import { Prisma } from '@prisma/client';
 import { prisma } from '~/db.server';
 
 export async function visitAndCheck(url: string, page: Page) {
@@ -19,7 +19,7 @@ export async function cleanupUser(email: string, page: Page) {
     await prisma.user.delete({ where: { email } });
   } catch (error) {
     if (
-      error instanceof PrismaClientKnownRequestError &&
+      error instanceof Prisma.PrismaClientKnownRequestError &&
       error.code === 'P2025'
     ) {
       console.log('User not found, so no need to delete');
