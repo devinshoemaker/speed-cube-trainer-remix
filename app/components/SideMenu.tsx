@@ -1,19 +1,16 @@
-import { Link } from '@remix-run/react';
+import { Form, Link } from '@remix-run/react';
 import { useState } from 'react';
+
+import { Button } from './ui/button';
 
 export default function SideMenu() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
     <>
-      {/* mobile nav */}
-      <div className="bg-gray-800 text-gray-100 flex justify-between sticky top-0 md:hidden">
-        {/* <!-- logo --> */}
-        <div className="block p-4 text-white font-bold">Cube Trainer</div>
-
-        {/* <!-- mobile menu button --> */}
+      <div id="mobile-nav" className="flex sticky top-0 md:hidden">
         <button
-          className="mobile-menu-button p-4 focus:outline-none focus:bg-gray-700"
+          className="p-4 focus:outline-none"
           onClick={() => setIsMenuOpen(!isMenuOpen)}
         >
           <svg
@@ -31,34 +28,48 @@ export default function SideMenu() {
             />
           </svg>
         </button>
+
+        <div className="block p-4 font-bold">Cube Trainer</div>
       </div>
-      {/* side menu */}
+
       <div
-        className={`sidebar bg-slate-700 text-blue-100 w-64 space-y-6 py-7 px-2 absolute inset-y-0 left-0 transform ${
+        id="side-menu"
+        className={`absolute md:relative inset-y-0 w-64 p-4 flex flex-col space-y-4 transform ${
           isMenuOpen ? '' : '-translate-x-full'
-        } md:relative md:translate-x-0 transition duration-200 ease-in-out z-10`}
+        } md:translate-x-0 transition duration-200 ease-in-out z-20 bg-background border-r`}
       >
-        {/* <!-- logo --> */}
-        <div className="text-white flex items-center space-x-2 px-4">
+        <div className="flex items-center space-x-2 px-4">
           <span className="text-2xl font-extrabold">Cube Trainer</span>
         </div>
 
-        {/* <!-- nav --> */}
         <nav>
-          <Link
-            to="/timer"
-            className="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white"
-          >
-            Timer
-          </Link>
-          <Link
-            to="/oll-list"
-            className="block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white"
-          >
-            OLL List
-          </Link>
+          <Button variant="ghost" className="flex justify-start w-full px-4">
+            <Link to="/timer">Timer</Link>
+          </Button>
+          <Button variant="ghost" className="flex justify-start w-full px-4">
+            <Link to="/oll-list">OLL List</Link>
+          </Button>
+          <Form action="/logout" method="post">
+            <Button
+              type="submit"
+              variant="ghost"
+              className="flex justify-start w-full px-4"
+            >
+              Logout
+            </Button>
+          </Form>
         </nav>
       </div>
+
+      {isMenuOpen ? (
+        <button
+          id="tinted-overlay"
+          className={`md:hidden fixed inset-0 z-10 bg-black/80 ${
+            isMenuOpen ? 'animate-in fade-in-0' : ''
+          } ${!isMenuOpen ? 'animate-out fade-out-0' : ''}`}
+          onClick={() => setIsMenuOpen(false)}
+        />
+      ) : null}
     </>
   );
 }
