@@ -1,4 +1,4 @@
-import { Case } from "../lib/cases";
+import { Case } from '../lib/cases';
 
 export default function AlgorithmCard({
   algorithmCase,
