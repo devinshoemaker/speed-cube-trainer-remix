@@ -1,11 +1,11 @@
-import { faker } from "@faker-js/faker";
-import test, { expect } from "@playwright/test";
+import { faker } from '@faker-js/faker';
+import test, { expect } from '@playwright/test';
 
-import { createUser } from "./lib/create-user";
-import { cleanupUser } from "./lib/utils";
+import { createUser } from './lib/create-user';
+import { cleanupUser } from './lib/utils';
 
-test.describe("OLL List", () => {
-  let email = "";
+test.describe('OLL List', () => {
+  let email = '';
   let shouldDeleteUser = true;
 
   test.beforeEach(() => {
@@ -20,21 +20,21 @@ test.describe("OLL List", () => {
     shouldDeleteUser = true;
   });
 
-  test("should redirect if user is unauthenticated", async ({ page }) => {
+  test('should redirect if user is unauthenticated', async ({ page }) => {
     shouldDeleteUser = false;
-    await page.goto("/oll-list");
-    await expect(page).toHaveURL("/login?redirectTo=%2Foll-list");
+    await page.goto('/oll-list');
+    await expect(page).toHaveURL('/login?redirectTo=%2Foll-list');
   });
 
-  test("side menu should navigate to timer", async ({ page }) => {
+  test('side menu should navigate to timer', async ({ page }) => {
     await createUser(email, page);
     await page.getByText(/OLL List/i).click();
-    await expect(page).toHaveURL("/oll-list");
+    await expect(page).toHaveURL('/oll-list');
   });
 
-  test("should render OLLs", async ({ page }) => {
+  test('should render OLLs', async ({ page }) => {
     await createUser(email, page);
-    await page.goto("/oll-list");
-    await expect(page.getByTestId("algorithm-card")).toHaveCount(4);
+    await page.goto('/oll-list');
+    await expect(page.getByTestId('algorithm-card')).toHaveCount(4);
   });
 });

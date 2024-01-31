@@ -1,7 +1,6 @@
-import { expect, Page } from "@playwright/test";
-import { PrismaClientKnownRequestError } from "@prisma/client/runtime";
-
-import { prisma } from "~/db.server";
+import { expect, Page } from '@playwright/test';
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
+import { prisma } from '~/db.server';
 
 export async function visitAndCheck(url: string, page: Page) {
   await page.goto(url);
@@ -10,10 +9,10 @@ export async function visitAndCheck(url: string, page: Page) {
 
 export async function cleanupUser(email: string, page: Page) {
   if (!email) {
-    throw new Error("email required for login");
+    throw new Error('email required for login');
   }
-  if (!email.endsWith("@example.com")) {
-    throw new Error("All test emails must end in @example.com");
+  if (!email.endsWith('@example.com')) {
+    throw new Error('All test emails must end in @example.com');
   }
 
   try {
@@ -21,9 +20,9 @@ export async function cleanupUser(email: string, page: Page) {
   } catch (error) {
     if (
       error instanceof PrismaClientKnownRequestError &&
-      error.code === "P2025"
+      error.code === 'P2025'
     ) {
-      console.log("User not found, so no need to delete");
+      console.log('User not found, so no need to delete');
     } else {
       throw error;
     }

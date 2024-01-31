@@ -2,41 +2,40 @@ import type {
   ActionFunctionArgs,
   LoaderFunctionArgs,
   MetaFunction,
-} from "@remix-run/node";
-import { json, redirect } from "@remix-run/node";
+} from '@remix-run/node';
+import { json, redirect } from '@remix-run/node';
 import {
   Form,
   Link,
   useActionData,
   useNavigation,
   useSearchParams,
-} from "@remix-run/react";
-import { useEffect, useRef } from "react";
-import { z } from "zod";
-
-import { Button } from "~/components/ui/button";
-import { Icons } from "~/components/ui/icons";
-import { Input } from "~/components/ui/input";
-import { Label } from "~/components/ui/label";
-import { cn } from "~/lib/utils";
-import { createUser, getUserByEmail } from "~/models/user.server";
-import { createUserSession, getUserId } from "~/session.server";
-import { safeRedirect } from "~/utils";
+} from '@remix-run/react';
+import { useEffect, useRef } from 'react';
+import { z } from 'zod';
+import { Button } from '~/components/ui/button';
+import { Icons } from '~/components/ui/icons';
+import { Input } from '~/components/ui/input';
+import { Label } from '~/components/ui/label';
+import { cn } from '~/lib/utils';
+import { createUser, getUserByEmail } from '~/models/user.server';
+import { createUserSession, getUserId } from '~/session.server';
+import { safeRedirect } from '~/utils';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const userId = await getUserId(request);
-  if (userId) return redirect("/");
+  if (userId) return redirect('/');
   return json({});
 };
 
 export const action = async ({ request }: ActionFunctionArgs) => {
   const formData = await request.formData();
-  const redirectTo = safeRedirect(formData.get("redirectTo"), "/");
+  const redirectTo = safeRedirect(formData.get('redirectTo'), '/');
 
   const passwordRequired = z
     .object({
-      email: z.string().email({ message: "Email is invalid" }),
-      password: z.string().min(1, { message: "Password is required" }),
+      email: z.string().email({ message: 'Email is invalid' }),
+      password: z.string().min(1, { message: 'Password is required' }),
     })
     .safeParse(Object.fromEntries(formData));
 
@@ -46,8 +45,8 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
   const parsedCredentials = z
     .object({
-      email: z.string().email({ message: "Email is invalid" }),
-      password: z.string().min(6, { message: "Password is too short" }),
+      email: z.string().email({ message: 'Email is invalid' }),
+      password: z.string().min(6, { message: 'Password is too short' }),
     })
     .safeParse(Object.fromEntries(formData));
 
@@ -59,7 +58,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
       return json(
         {
           errors: {
-            email: "A user already exists with this email",
+            email: 'A user already exists with this email',
             password: null,
           },
         },
@@ -80,15 +79,15 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   }
 };
 
-export const meta: MetaFunction = () => [{ title: "Sign Up" }];
+export const meta: MetaFunction = () => [{ title: 'Sign Up' }];
 
 export default function Join() {
   const [searchParams] = useSearchParams();
-  const redirectTo = searchParams.get("redirectTo") ?? undefined;
+  const redirectTo = searchParams.get('redirectTo') ?? undefined;
   const actionData = useActionData<typeof action>();
   const errors = actionData?.errors;
   const navigation = useNavigation();
-  const pending = navigation.state === "submitting";
+  const pending = navigation.state === 'submitting';
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
 
@@ -109,7 +108,7 @@ export default function Join() {
           </h1>
         </div>
 
-        <div id="login-form" className={cn("grid gap-6")}>
+        <div id="login-form" className={cn('grid gap-6')}>
           <Form method="post">
             <div className="grid gap-2">
               <div className="grid gap-1">
@@ -170,14 +169,14 @@ export default function Join() {
         </div>
 
         <p id="tos" className="px-8 text-center text-sm text-muted-foreground">
-          By clicking continue, you agree to our{" "}
+          By clicking continue, you agree to our{' '}
           <Link
             to="/terms"
             className="underline underline-offset-4 hover:text-primary"
           >
             Terms of Service
-          </Link>{" "}
-          and{" "}
+          </Link>{' '}
+          and{' '}
           <Link
             to="/privacy"
             className="underline underline-offset-4 hover:text-primary"

@@ -1,7 +1,6 @@
-import { LoaderFunctionArgs } from "@remix-run/node";
-import { useEffect, useRef, useState } from "react";
-
-import { requireUserId } from "~/session.server";
+import { LoaderFunctionArgs } from '@remix-run/node';
+import { useEffect, useRef, useState } from 'react';
+import { requireUserId } from '~/session.server';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   await requireUserId(request);
@@ -15,7 +14,7 @@ export default function Timer() {
 
   useEffect(() => {
     function handleKeyDown(event: KeyboardEvent) {
-      if (event.code === "Space") {
+      if (event.code === 'Space') {
         if (running) {
           stopTimer();
         } else {
@@ -24,10 +23,10 @@ export default function Timer() {
       }
     }
 
-    document.addEventListener("keyup", handleKeyDown);
+    document.addEventListener('keyup', handleKeyDown);
 
     return () => {
-      document.removeEventListener("keyup", handleKeyDown);
+      document.removeEventListener('keyup', handleKeyDown);
     };
   }, [running]);
 
@@ -50,9 +49,9 @@ export default function Timer() {
     const minutes = Math.floor((time / 1000 / 60) % 60);
     const seconds = Math.floor((time / 1000) % 60);
     const milliseconds = Math.floor((time % 1000) / 10);
-    return `${minutes < 10 ? "0" : ""}${minutes}:${
-      seconds < 10 ? "0" : ""
-    }${seconds}:${milliseconds < 10 ? "0" : ""}${milliseconds}`;
+    return `${minutes < 10 ? '0' : ''}${minutes}:${
+      seconds < 10 ? '0' : ''
+    }${seconds}:${milliseconds < 10 ? '0' : ''}${milliseconds}`;
   }
 
   return (

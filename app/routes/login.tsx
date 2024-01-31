@@ -2,42 +2,41 @@ import type {
   ActionFunctionArgs,
   LoaderFunctionArgs,
   MetaFunction,
-} from "@remix-run/node";
-import { json, redirect } from "@remix-run/node";
+} from '@remix-run/node';
+import { json, redirect } from '@remix-run/node';
 import {
   Form,
   Link,
   useActionData,
   useNavigation,
   useSearchParams,
-} from "@remix-run/react";
-import { useEffect, useRef } from "react";
-import { z } from "zod";
-
-import { Button } from "~/components/ui/button";
-import { Icons } from "~/components/ui/icons";
-import { Input } from "~/components/ui/input";
-import { Label } from "~/components/ui/label";
-import { cn } from "~/lib/utils";
-import { verifyLogin } from "~/models/user.server";
-import { createUserSession, getUserId } from "~/session.server";
-import { safeRedirect } from "~/utils";
+} from '@remix-run/react';
+import { useEffect, useRef } from 'react';
+import { z } from 'zod';
+import { Button } from '~/components/ui/button';
+import { Icons } from '~/components/ui/icons';
+import { Input } from '~/components/ui/input';
+import { Label } from '~/components/ui/label';
+import { cn } from '~/lib/utils';
+import { verifyLogin } from '~/models/user.server';
+import { createUserSession, getUserId } from '~/session.server';
+import { safeRedirect } from '~/utils';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const userId = await getUserId(request);
-  if (userId) return redirect("/");
+  if (userId) return redirect('/');
   return json({});
 };
 
 export const action = async ({ request }: ActionFunctionArgs) => {
   const formData = await request.formData();
-  const redirectTo = safeRedirect(formData.get("redirectTo"), "/");
-  const remember = formData.get("remember");
+  const redirectTo = safeRedirect(formData.get('redirectTo'), '/');
+  const remember = formData.get('remember');
 
   const passwordRequired = z
     .object({
-      email: z.string().email({ message: "Email is invalid" }),
-      password: z.string().min(1, { message: "Password is required" }),
+      email: z.string().email({ message: 'Email is invalid' }),
+      password: z.string().min(1, { message: 'Password is required' }),
     })
     .safeParse(Object.fromEntries(formData));
 
@@ -47,8 +46,8 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
   const parsedCredentials = z
     .object({
-      email: z.string().email({ message: "Email is invalid" }),
-      password: z.string().min(6, { message: "Password is too short" }),
+      email: z.string().email({ message: 'Email is invalid' }),
+      password: z.string().min(6, { message: 'Password is too short' }),
     })
     .safeParse(Object.fromEntries(formData));
 
@@ -58,14 +57,14 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
     if (!user) {
       return json(
-        { errors: { email: "Invalid email or password", password: null } },
+        { errors: { email: 'Invalid email or password', password: null } },
         { status: 400 },
       );
     }
 
     return createUserSession({
       redirectTo,
-      remember: remember === "on" ? true : false,
+      remember: remember === 'on' ? true : false,
       request,
       userId: user.id,
     });
@@ -74,15 +73,15 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   }
 };
 
-export const meta: MetaFunction = () => [{ title: "Login" }];
+export const meta: MetaFunction = () => [{ title: 'Login' }];
 
 export default function LoginPage() {
   const [searchParams] = useSearchParams();
-  const redirectTo = searchParams.get("redirectTo") || "/notes";
+  const redirectTo = searchParams.get('redirectTo') || '/notes';
   const actionData = useActionData<typeof action>();
   const errors = actionData?.errors;
   const navigation = useNavigation();
-  const pending = navigation.state === "submitting";
+  const pending = navigation.state === 'submitting';
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
 
@@ -101,7 +100,7 @@ export default function LoginPage() {
           <h1 className="text-2xl font-semibold tracking-tight">Log In</h1>
         </div>
 
-        <div id="login-form" className={cn("grid gap-6")}>
+        <div id="login-form" className={cn('grid gap-6')}>
           <Form method="post">
             <div className="grid gap-2">
               <div className="grid gap-1">
