@@ -1,7 +1,7 @@
 import type {
   ActionFunctionArgs,
   LoaderFunctionArgs,
-  MetaFunction,
+  MetaFunction
 } from '@remix-run/node';
 import { json, redirect } from '@remix-run/node';
 import {
@@ -9,7 +9,7 @@ import {
   Link,
   useActionData,
   useNavigation,
-  useSearchParams,
+  useSearchParams
 } from '@remix-run/react';
 import { useEffect, useRef } from 'react';
 import { z } from 'zod';
@@ -36,7 +36,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const passwordRequired = z
     .object({
       email: z.string().email({ message: 'Email is invalid' }),
-      password: z.string().min(1, { message: 'Password is required' }),
+      password: z.string().min(1, { message: 'Password is required' })
     })
     .safeParse(Object.fromEntries(formData));
 
@@ -47,7 +47,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   const parsedCredentials = z
     .object({
       email: z.string().email({ message: 'Email is invalid' }),
-      password: z.string().min(6, { message: 'Password is too short' }),
+      password: z.string().min(6, { message: 'Password is too short' })
     })
     .safeParse(Object.fromEntries(formData));
 
@@ -58,7 +58,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
     if (!user) {
       return json(
         { errors: { email: 'Invalid email or password', password: null } },
-        { status: 400 },
+        { status: 400 }
       );
     }
 
@@ -66,7 +66,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
       redirectTo,
       remember: remember === 'on' ? true : false,
       request,
-      userId: user.id,
+      userId: user.id
     });
   } else {
     return json({ errors: parsedCredentials.error.formErrors.fieldErrors });

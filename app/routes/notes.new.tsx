@@ -15,14 +15,14 @@ export const action = async ({ request }: ActionFunctionArgs) => {
   if (typeof title !== 'string' || title.length === 0) {
     return json(
       { errors: { body: null, title: 'Title is required' } },
-      { status: 400 },
+      { status: 400 }
     );
   }
 
   if (typeof body !== 'string' || body.length === 0) {
     return json(
       { errors: { body: 'Body is required', title: null } },
-      { status: 400 },
+      { status: 400 }
     );
   }
 
@@ -51,7 +51,7 @@ export default function NewNotePage() {
         display: 'flex',
         flexDirection: 'column',
         gap: 8,
-        width: '100%',
+        width: '100%'
       }}
     >
       <div>

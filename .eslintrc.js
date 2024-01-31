@@ -11,13 +11,13 @@ module.exports = {
     ecmaVersion: 'latest',
     sourceType: 'module',
     ecmaFeatures: {
-      jsx: true,
-    },
+      jsx: true
+    }
   },
   env: {
     browser: true,
     commonjs: true,
-    es6: true,
+    es6: true
   },
 
   // Base config
@@ -33,24 +33,21 @@ module.exports = {
         'plugin:react/jsx-runtime',
         'plugin:react-hooks/recommended',
         'plugin:jsx-a11y/recommended',
-        'prettier',
+        'prettier'
       ],
       settings: {
         react: {
-          version: 'detect',
+          version: 'detect'
         },
         formComponents: ['Form'],
         linkComponents: [
           { name: 'Link', linkAttribute: 'to' },
-          { name: 'NavLink', linkAttribute: 'to' },
-        ],
+          { name: 'NavLink', linkAttribute: 'to' }
+        ]
       },
       rules: {
-        'react/jsx-no-leaked-render': [
-          'warn',
-          { validStrategies: ['ternary'] },
-        ],
-      },
+        'react/jsx-no-leaked-render': ['warn', { validStrategies: ['ternary'] }]
+      }
     },
 
     // Typescript
@@ -61,19 +58,19 @@ module.exports = {
       extends: [
         'plugin:@typescript-eslint/recommended',
         'plugin:@typescript-eslint/stylistic',
-        'prettier',
+        'prettier'
       ],
       rules: {
         '@typescript-eslint/no-empty-interface': 'off',
-        'react/prop-types': 'off',
-      },
+        'react/prop-types': 'off'
+      }
     },
 
     // Markdown
     {
       files: ['**/*.md'],
       plugins: ['markdown'],
-      extends: ['plugin:markdown/recommended', 'prettier'],
+      extends: ['plugin:markdown/recommended', 'prettier']
     },
 
     // Jest/Vitest
@@ -84,27 +81,27 @@ module.exports = {
         'plugin:jest/recommended',
         'plugin:jest-dom/recommended',
         'plugin:testing-library/react',
-        'prettier',
+        'prettier'
       ],
       env: {
-        'jest/globals': true,
+        'jest/globals': true
       },
       settings: {
         jest: {
           // we're using vitest which has a very similar API to jest
           // (so the linting plugins work nicely), but it means we have to explicitly
           // set the jest version.
-          version: 28,
-        },
-      },
+          version: 28
+        }
+      }
     },
 
     // Node
     {
       files: ['.eslintrc.js', 'mocks/**/*.js'],
       env: {
-        node: true,
-      },
-    },
-  ],
+        node: true
+      }
+    }
+  ]
 };

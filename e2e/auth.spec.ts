@@ -51,7 +51,7 @@ test.describe('Authentication', () => {
   });
 
   test('should display error if the username or password is too short', async ({
-    page,
+    page
   }) => {
     shouldDeleteUser = false;
     await visitAndCheck('/', page);
@@ -66,7 +66,7 @@ test.describe('Authentication', () => {
   });
 
   test('should display error if the username or password is incorrect', async ({
-    page,
+    page
   }) => {
     shouldDeleteUser = false;
     await visitAndCheck('/', page);
@@ -79,7 +79,7 @@ test.describe('Authentication', () => {
   });
 
   test('should display error if the username is already taken', async ({
-    page,
+    page
   }) => {
     shouldDeleteUser = false;
     const password = faker.internet.password();
@@ -101,7 +101,7 @@ test.describe('Authentication', () => {
     await page.getByRole('button', { name: /Sign Up/i }).click();
 
     await expect(
-      page.getByText(/A user already exists with this email/i),
+      page.getByText(/A user already exists with this email/i)
     ).toBeVisible();
   });
 });

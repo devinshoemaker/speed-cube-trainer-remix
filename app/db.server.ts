@@ -38,9 +38,9 @@ function getPrismaClient() {
   const client = new PrismaClient({
     datasources: {
       db: {
-        url: databaseUrl.toString(),
-      },
-    },
+        url: databaseUrl.toString()
+      }
+    }
   });
   // connect eagerly
   client.$connect();
