@@ -4,7 +4,7 @@ import {
   Form,
   isRouteErrorResponse,
   useLoaderData,
-  useRouteError,
+  useRouteError
 } from '@remix-run/react';
 import invariant from 'tiny-invariant';
 import { deleteNote, getNote } from '~/models/note.server';

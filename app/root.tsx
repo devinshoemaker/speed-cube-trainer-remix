@@ -8,7 +8,7 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
-  useLoaderData,
+  useLoaderData
 } from '@remix-run/react';
 import clsx from 'clsx';
 import { ThemeProvider, useTheme } from 'remix-themes';
@@ -19,7 +19,7 @@ import SideMenu from './components/SideMenu';
 
 export const links: LinksFunction = () => [
   { rel: 'stylesheet', href: stylesheet },
-  ...(cssBundleHref ? [{ rel: 'stylesheet', href: cssBundleHref }] : []),
+  ...(cssBundleHref ? [{ rel: 'stylesheet', href: cssBundleHref }] : [])
 ];
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
