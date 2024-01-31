@@ -1,5 +1,5 @@
 import { expect, Page } from '@playwright/test';
-import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { prisma } from '~/db.server';
 
 export async function visitAndCheck(url: string, page: Page) {
