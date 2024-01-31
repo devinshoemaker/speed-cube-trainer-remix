@@ -1,5 +1,4 @@
 export interface Case {
-  id?: number;
   name: string;
   group: 'Dot';
   algorithm: string;
