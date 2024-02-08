@@ -24,13 +24,13 @@ import { safeRedirect } from '~/utils';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const userId = await getUserId(request);
-  if (userId) return redirect('/');
+  if (userId) return redirect('/timer');
   return json({});
 };
 
 export const action = async ({ request }: ActionFunctionArgs) => {
   const formData = await request.formData();
-  const redirectTo = safeRedirect(formData.get('redirectTo'), '/');
+  const redirectTo = safeRedirect(formData.get('redirectTo'), '/timer');
 
   const passwordRequired = z
     .object({
