@@ -15,8 +15,6 @@ import { ThemeProvider, useTheme } from 'remix-themes';
 import { getUser, themeSessionResolver } from '~/session.server';
 import stylesheet from '~/tailwind.css';
 
-import SideMenu from './components/SideMenu';
-
 export const links: LinksFunction = () => [
   { rel: 'stylesheet', href: stylesheet },
   ...(cssBundleHref ? [{ rel: 'stylesheet', href: cssBundleHref }] : [])
@@ -42,18 +40,15 @@ export default function AppWithProviders() {
 export function App() {
   const [theme] = useTheme();
   return (
-    <html lang="en" className={clsx(theme, 'h-full')}>
+    <html lang="en" className={clsx(theme)}>
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
         <Meta />
         <Links />
       </head>
-      <body className="relative min-h-screen md:flex text-foreground w-full bg-background">
-        <SideMenu />
-        <main className="min-h-screen w-full flex flex-col items-center">
-          <Outlet />
-        </main>
+      <body>
+        <Outlet />
         <ScrollRestoration />
         <Scripts />
         <LiveReload />
