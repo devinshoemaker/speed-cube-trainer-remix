@@ -43,11 +43,21 @@ export default function SideMenu() {
         </div>
 
         <nav>
-          <Button variant="ghost" className="flex justify-start w-full px-4">
-            <Link to="/timer">Timer</Link>
+          <Button
+            variant="ghost"
+            className="flex justify-start w-full px-0 py-0"
+          >
+            <Link to="/timer" className="w-full px-4 py-2 flex">
+              Timer
+            </Link>
           </Button>
-          <Button variant="ghost" className="flex justify-start w-full px-4">
-            <Link to="/oll-list">OLL List</Link>
+          <Button
+            variant="ghost"
+            className="flex justify-start w-full px-0 py-0"
+          >
+            <Link to="/oll-list" className="w-full px-4 py-2 flex">
+              OLL List
+            </Link>
           </Button>
           <Form action="/logout" method="post">
             <Button
