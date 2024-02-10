@@ -1,5 +1,5 @@
 import { LoaderFunctionArgs } from '@remix-run/node';
-import AlgorithmCard from '~/components/AlgorithmCard';
+import AlgorithmCard from '~/components/algorithm-card';
 import { olls } from '~/lib/cases';
 import { requireUserId } from '~/session.server';
 
