@@ -1,5 +1,6 @@
 import { Outlet } from '@remix-run/react';
-import SideMenu from '~/components/side-menu';
+
+import SideMenu from './side-menu';
 
 export default function AppLayout() {
   return (

@@ -1,7 +1,8 @@
 import { LoaderFunctionArgs } from '@remix-run/node';
-import AlgorithmCard from '~/components/algorithm-card';
-import { olls } from '~/lib/cases';
 import { requireUserId } from '~/session.server';
+
+import AlgorithmCard from './algorithm-card';
+import { olls } from './cases';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   await requireUserId(request);
