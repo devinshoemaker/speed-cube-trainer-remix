@@ -1,5 +1,6 @@
 import { expect, Page } from '@playwright/test';
 import { Prisma } from '@prisma/client';
+
 import { prisma } from '~/db.server';
 
 export async function visitAndCheck(url: string, page: Page) {
