@@ -1,6 +1,14 @@
+import { LoaderFunctionArgs } from '@remix-run/node';
 import { Outlet } from '@remix-run/react';
 
+import { requireUserId } from '~/session.server';
+
 import SideMenu from './side-menu';
+
+export const loader = async ({ request }: LoaderFunctionArgs) => {
+  await requireUserId(request);
+  return null;
+};
 
 export default function AppLayout() {
   return (
