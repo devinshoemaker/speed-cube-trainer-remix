@@ -24,13 +24,13 @@ import { safeRedirect } from '~/utils';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const userId = await getUserId(request);
-  if (userId) return redirect('/');
+  if (userId) return redirect('/timer');
   return json({});
 };
 
 export const action = async ({ request }: ActionFunctionArgs) => {
   const formData = await request.formData();
-  const redirectTo = safeRedirect(formData.get('redirectTo'), '/');
+  const redirectTo = safeRedirect(formData.get('redirectTo'), '/timer');
   const remember = formData.get('remember');
 
   const passwordRequired = z
@@ -77,7 +77,7 @@ export const meta: MetaFunction = () => [{ title: 'Login' }];
 
 export default function LoginPage() {
   const [searchParams] = useSearchParams();
-  const redirectTo = searchParams.get('redirectTo') || '/notes';
+  const redirectTo = searchParams.get('redirectTo') || '/timer';
   const actionData = useActionData<typeof action>();
   const errors = actionData?.errors;
   const navigation = useNavigation();

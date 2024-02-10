@@ -28,14 +28,15 @@ test.describe('Authentication', () => {
     await page.getByLabel(/password/i).fill(password);
     await page.getByRole('button', { name: /Sign Up/i }).click();
 
-    await page.getByRole('link', { name: /notes/i }).click();
     await page.getByRole('button', { name: /logout/i }).click();
 
     await page.getByRole('textbox', { name: /email/i }).fill(email);
     await page.getByLabel(/password/i).fill(password);
     await page.getByRole('button', { name: /Sign In/i }).click();
 
-    await expect(page.getByRole('link', { name: 'Notes' })).toBeVisible();
+    await expect(
+      page.locator('#side-menu').getByText('Cube Trainer')
+    ).toBeVisible();
   });
 
   test('should display error if the password is empty', async ({ page }) => {
@@ -85,7 +86,6 @@ test.describe('Authentication', () => {
     await page.getByLabel(/password/i).fill(password);
     await page.getByRole('button', { name: /Sign Up/i }).click();
 
-    await page.getByRole('link', { name: /notes/i }).click();
     await page.getByRole('button', { name: /logout/i }).click();
 
     await page.getByRole('link', { name: /sign up/i }).click();
