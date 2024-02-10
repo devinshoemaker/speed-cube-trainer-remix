@@ -1,7 +1,6 @@
 import { Form, Link } from '@remix-run/react';
 import { useState } from 'react';
-
-import { Button } from './ui/button';
+import { Button } from '~/components/ui/button';
 
 export default function SideMenu() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
