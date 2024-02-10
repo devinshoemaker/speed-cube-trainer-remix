@@ -1,14 +1,5 @@
-import { LoaderFunctionArgs } from '@remix-run/node';
-
-import { requireUserId } from '~/session.server';
-
 import AlgorithmCard from './algorithm-card';
 import { olls } from './cases';
-
-export const loader = async ({ request }: LoaderFunctionArgs) => {
-  await requireUserId(request);
-  return null;
-};
 
 export default function OllList() {
   return (

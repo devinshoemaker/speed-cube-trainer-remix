@@ -1,12 +1,4 @@
-import { LoaderFunctionArgs } from '@remix-run/node';
 import { useEffect, useRef, useState } from 'react';
-
-import { requireUserId } from '~/session.server';
-
-export const loader = async ({ request }: LoaderFunctionArgs) => {
-  await requireUserId(request);
-  return null;
-};
 
 export default function Timer() {
   const [time, setTime] = useState(0);
