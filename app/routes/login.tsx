@@ -135,14 +135,19 @@ export default function LoginPage() {
               </div>
 
               <input type="hidden" name="redirectTo" value={redirectTo} />
-              <Button disabled={pending}>
+              <Button type="submit" disabled={pending}>
                 {pending ? (
                   <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
                 ) : null}
                 Sign In with Email
               </Button>
-              <Button>
-                <Link to="/register">Sign Up</Link>
+              <Button type="button" className="p-0">
+                <Link
+                  to="/register"
+                  className="w-full h-full flex items-center justify-center"
+                >
+                  Sign Up
+                </Link>
               </Button>
               <div
                 className="flex h-8 items-end space-x-1"

@@ -143,14 +143,19 @@ export default function Join() {
               </div>
 
               <input type="hidden" name="redirectTo" value={redirectTo} />
-              <Button disabled={pending}>
+              <Button type="submit" disabled={pending}>
                 {pending ? (
                   <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
                 ) : null}
                 Sign Up with Email
               </Button>
-              <Button>
-                <Link to="/login">Sign In</Link>
+              <Button type="button" className="p-0">
+                <Link
+                  to="/login"
+                  className="w-full h-full flex items-center justify-center"
+                >
+                  Sign In
+                </Link>
               </Button>
               <div
                 className="flex h-8 items-end space-x-1"
