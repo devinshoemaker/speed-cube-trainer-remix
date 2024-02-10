@@ -12,6 +12,7 @@ import {
 } from '@remix-run/react';
 import clsx from 'clsx';
 import { ThemeProvider, useTheme } from 'remix-themes';
+
 import { getUser, themeSessionResolver } from '~/session.server';
 import stylesheet from '~/tailwind.css';
 
