@@ -4,6 +4,9 @@ import { expect, test } from '@playwright/test';
 import { cleanupUser, visitAndCheck } from './lib/utils';
 
 test.describe('Authentication', () => {
+  const seededUser = 'admin@test.com';
+  const seededPassword = 'p4ssw0rd';
+
   let email = '';
   let shouldDeleteUser = true;
 
@@ -97,5 +100,29 @@ test.describe('Authentication', () => {
     await expect(
       page.getByText(/A user already exists with this email/i)
     ).toBeVisible();
+  });
+
+  test('should redirect to timer if user attempts to navigate to login', async ({
+    page
+  }) => {
+    await page.goto('/login');
+    await page.getByPlaceholder('name@example.com').fill(seededUser);
+    await page.getByPlaceholder('password').fill(seededPassword);
+    await page.getByRole('button', { name: 'Sign In with Email' }).click();
+    await expect(page).toHaveURL(/.*timer/);
+    await page.goto('/login');
+    await expect(page).toHaveURL(/.*timer/);
+  });
+
+  test('should redirect to timer if user attempts to navigate to register', async ({
+    page
+  }) => {
+    await page.goto('/login');
+    await page.getByPlaceholder('name@example.com').fill(seededUser);
+    await page.getByPlaceholder('password').fill(seededPassword);
+    await page.getByRole('button', { name: 'Sign In with Email' }).click();
+    await expect(page).toHaveURL(/.*timer/);
+    await page.goto('/register');
+    await expect(page).toHaveURL(/.*timer/);
   });
 });
