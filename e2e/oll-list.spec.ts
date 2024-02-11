@@ -22,19 +22,19 @@ test.describe('OLL List', () => {
 
   test('should redirect if user is unauthenticated', async ({ page }) => {
     shouldDeleteUser = false;
-    await page.goto('/oll-list');
-    await expect(page).toHaveURL('/login?redirectTo=%2Foll-list');
+    await page.goto('/oll');
+    await expect(page).toHaveURL('/login?redirectTo=%2Foll');
   });
 
   test('side menu should navigate to timer', async ({ page }) => {
     await createUser(email, page);
     await page.getByText(/OLL List/i).click();
-    await expect(page).toHaveURL('/oll-list');
+    await expect(page).toHaveURL('/oll');
   });
 
   test('should render OLLs', async ({ page }) => {
     await createUser(email, page);
-    await page.goto('/oll-list');
+    await page.goto('/oll');
     await expect(page.getByTestId('algorithm-card')).toHaveCount(4);
   });
 });

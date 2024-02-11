@@ -55,7 +55,7 @@ export default function SideMenu() {
             variant="ghost"
             className="flex justify-start w-full px-0 py-0"
           >
-            <Link to="/oll-list" className="w-full px-4 py-2 flex">
+            <Link to="/oll" className="w-full px-4 py-2 flex">
               OLL List
             </Link>
           </Button>
