@@ -22,19 +22,24 @@ test.describe('OLL List', () => {
 
   test('should redirect if user is unauthenticated', async ({ page }) => {
     shouldDeleteUser = false;
-    await page.goto('/oll');
-    await expect(page).toHaveURL('/login?redirectTo=%2Foll');
+    await page.goto('/oll/1');
+    await expect(page).toHaveURL('/login?redirectTo=%2Foll%2F1');
   });
 
-  test('side menu should navigate to OLL list', async ({ page }) => {
+  test('side menu should navigate to OLL page from OLL list', async ({
+    page
+  }) => {
     await createUser(email, page);
-    await page.getByText(/OLL List/i).click();
+    await page.goto('/oll');
+    await page.getByTestId('algorithm-card').nth(0).click();
+    await expect(page).toHaveURL('/oll/1');
+  });
+
+  test('navigating to a bad OLL redirects user to OLL list', async ({
+    page
+  }) => {
+    await createUser(email, page);
+    await page.goto('/oll/notAnOll');
     await expect(page).toHaveURL('/oll');
-  });
-
-  test('should render OLLs', async ({ page }) => {
-    await createUser(email, page);
-    await page.goto('/oll');
-    await expect(page.getByTestId('algorithm-card')).toHaveCount(4);
   });
 });

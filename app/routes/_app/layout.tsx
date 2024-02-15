@@ -3,7 +3,7 @@ import { Outlet } from '@remix-run/react';
 
 import { requireUserId } from '~/session.server';
 
-import SideMenu from './side-menu';
+import SideMenu from './-components/side-menu';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   await requireUserId(request);
