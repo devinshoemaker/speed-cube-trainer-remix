@@ -28,13 +28,54 @@ export default function AlgorithmCard({
           <AlgorithmCardContent algorithmCase={algorithmCase} />
         </div>
       )}
-
-      <div id="status-buttons" className="flex justify-between pt-4">
-        {/* TODO turn this into a radio? */}
-        <button>Not Learned</button>
-        <button>Learning</button>
-        <button>Learned</button>
-      </div>
+      
+      <ul className="flex justify-between pt-4">
+        <li>
+          <input
+            type="radio"
+            name="oll-progress"
+            id="not-learned"
+            value="not-learned"
+            className="peer hidden"
+          />
+          <label
+            htmlFor="not-learned"
+            className="peer-checked:bg-blue-500 peer-checked:rounded p-2"
+          >
+            Not Learned
+          </label>
+        </li>
+        <li>
+          <input
+            type="radio"
+            name="oll-progress"
+            id="learning"
+            value="learning"
+            className="peer hidden"
+          />
+          <label
+            htmlFor="learning"
+            className="peer-checked:bg-blue-500 peer-checked:rounded p-2"
+          >
+            Learning
+          </label>
+        </li>
+        <li>
+          <input
+            type="radio"
+            name="oll-progress"
+            id="learned"
+            value="learned"
+            className="peer hidden"
+          />
+          <label
+            htmlFor="learned"
+            className="peer-checked:bg-blue-500 peer-checked:rounded p-2"
+          >
+            Learned
+          </label>
+        </li>
+      </ul>
     </div>
   );
 }
