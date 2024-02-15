@@ -28,7 +28,7 @@ export default function AlgorithmCard({
           <AlgorithmCardContent algorithmCase={algorithmCase} />
         </div>
       )}
-      
+
       <ul className="flex justify-between pt-4">
         <li>
           <input
@@ -37,6 +37,7 @@ export default function AlgorithmCard({
             id="not-learned"
             value="not-learned"
             className="peer hidden"
+            defaultChecked={algorithmCase.status === 'not-learned'}
           />
           <label
             htmlFor="not-learned"
@@ -52,6 +53,7 @@ export default function AlgorithmCard({
             id="learning"
             value="learning"
             className="peer hidden"
+            defaultChecked={algorithmCase.status === 'learning'}
           />
           <label
             htmlFor="learning"
@@ -67,6 +69,7 @@ export default function AlgorithmCard({
             id="learned"
             value="learned"
             className="peer hidden"
+            defaultChecked={algorithmCase.status === 'learned'}
           />
           <label
             htmlFor="learned"

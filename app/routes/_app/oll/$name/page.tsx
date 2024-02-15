@@ -1,13 +1,38 @@
 import { LoaderFunctionArgs, json, redirect } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
 
+import { prisma } from '~/db.server';
+import { getUserId } from '~/session.server';
+
 import Timer from '../../-components/timer';
 import AlgorithmCard from '../algorithm-card';
-import { olls } from '../cases';
+import { Case, olls } from '../cases';
 
-export async function loader({ params }: LoaderFunctionArgs) {
+export async function loader({ request, params }: LoaderFunctionArgs) {
+  const userId = await getUserId(request);
+
   const oll = olls.find((oll) => oll.name === params.name);
   if (oll) {
+    if (userId) {
+      const userOll = await prisma.ollStatus.findFirst({
+        where: {
+          userId: userId,
+          ollName: params.name
+        }
+      });
+
+      const mappedOll: Case = userOll
+        ? {
+            ...oll,
+            id: userOll.id,
+            name: userOll.ollName,
+            status: userOll.status
+          }
+        : { ...oll, status: 'not-learned' };
+
+      return json({ oll: mappedOll });
+    }
+
     return json({ oll });
   }
 
