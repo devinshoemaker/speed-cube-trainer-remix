@@ -1,5 +1,11 @@
-import { LoaderFunctionArgs, json, redirect } from '@remix-run/node';
+import {
+  ActionFunctionArgs,
+  LoaderFunctionArgs,
+  json,
+  redirect
+} from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
+import { z } from 'zod';
 
 import { prisma } from '~/db.server';
 import { getUserId } from '~/session.server';
@@ -37,6 +43,63 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
   }
 
   return redirect('/oll');
+}
+
+export async function action({ request, params }: ActionFunctionArgs) {
+  const userId = await getUserId(request);
+  if (userId) {
+    const formData = await request.formData();
+    const input = {
+      ollName: params.name,
+      status: formData.get('oll-status')
+    };
+
+    const parsedInput = z
+      .object({
+        ollName: z.string(),
+        status: z.string()
+      })
+      .safeParse(input);
+
+    if (parsedInput.success) {
+      const { ollName, status } = parsedInput.data;
+      const existingOll = await prisma.ollStatus.findFirst({
+        where: {
+          userId,
+          ollName
+        }
+      });
+
+      if (existingOll) {
+        await prisma.ollStatus.update({
+          where: {
+            id: existingOll.id
+          },
+          data: {
+            status
+          }
+        });
+
+        return null;
+      }
+
+      await prisma.ollStatus.create({
+        data: {
+          ollName,
+          status,
+          user: {
+            connect: {
+              id: userId
+            }
+          }
+        }
+      });
+
+      return null;
+    }
+  }
+
+  return redirect('/');
 }
 
 export default function OllPage() {

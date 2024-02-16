@@ -1,4 +1,4 @@
-import { Link } from '@remix-run/react';
+import { Link, useFetcher } from '@remix-run/react';
 
 import { Case } from './cases';
 
@@ -9,6 +9,7 @@ export default function AlgorithmCard({
   algorithmCase: Case;
   isLink?: boolean;
 }) {
+  const fetcher = useFetcher();
   return (
     <div
       id="algorithm-card"
@@ -29,56 +30,67 @@ export default function AlgorithmCard({
         </div>
       )}
 
-      <ul className="flex justify-between pt-4">
-        <li>
-          <input
-            type="radio"
-            name="oll-progress"
-            id="not-learned"
-            value="not-learned"
-            className="peer hidden"
-            defaultChecked={algorithmCase.status === 'not-learned'}
-          />
-          <label
-            htmlFor="not-learned"
-            className="peer-checked:bg-blue-500 peer-checked:rounded p-2"
-          >
-            Not Learned
-          </label>
-        </li>
-        <li>
-          <input
-            type="radio"
-            name="oll-progress"
-            id="learning"
-            value="learning"
-            className="peer hidden"
-            defaultChecked={algorithmCase.status === 'learning'}
-          />
-          <label
-            htmlFor="learning"
-            className="peer-checked:bg-blue-500 peer-checked:rounded p-2"
-          >
-            Learning
-          </label>
-        </li>
-        <li>
-          <input
-            type="radio"
-            name="oll-progress"
-            id="learned"
-            value="learned"
-            className="peer hidden"
-            defaultChecked={algorithmCase.status === 'learned'}
-          />
-          <label
-            htmlFor="learned"
-            className="peer-checked:bg-blue-500 peer-checked:rounded p-2"
-          >
-            Learned
-          </label>
-        </li>
-      </ul>
+      <fetcher.Form method="post" action={`/oll/${algorithmCase.name}`}>
+        <ul className="flex justify-between pt-4">
+          <li>
+            <input
+              type="radio"
+              name="oll-status"
+              id="not-learned"
+              value="not-learned"
+              className="peer hidden"
+              defaultChecked={algorithmCase.status === 'not-learned'}
+              onChange={(e) =>
+                fetcher.submit(e.currentTarget.form, { method: 'POST' })
+              }
+            />
+            <label
+              htmlFor="not-learned"
+              className="peer-checked:bg-blue-500 peer-checked:rounded p-2"
+            >
+              Not Learned
+            </label>
+          </li>
+          <li>
+            <input
+              type="radio"
+              name="oll-status"
+              id="learning"
+              value="learning"
+              className="peer hidden"
+              defaultChecked={algorithmCase.status === 'learning'}
+              onChange={(e) =>
+                fetcher.submit(e.currentTarget.form, { method: 'POST' })
+              }
+            />
+            <label
+              htmlFor="learning"
+              className="peer-checked:bg-blue-500 peer-checked:rounded p-2"
+            >
+              Learning
+            </label>
+          </li>
+          <li>
+            <input
+              type="radio"
+              name="oll-status"
+              id="learned"
+              value="learned"
+              className="peer hidden"
+              defaultChecked={algorithmCase.status === 'learned'}
+              onChange={(e) =>
+                fetcher.submit(e.currentTarget.form, { method: 'POST' })
+              }
+            />
+            <label
+              htmlFor="learned"
+              className="peer-checked:bg-blue-500 peer-checked:rounded p-2"
+            >
+              Learned
+            </label>
+          </li>
+        </ul>
+      </fetcher.Form>
     </div>
   );
 }
