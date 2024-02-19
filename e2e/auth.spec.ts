@@ -107,6 +107,9 @@ test.describe('Authentication', () => {
   }) => {
     shouldDeleteUser = false;
 
+    email = `${faker.internet.userName()}@example.com`;
+    password = faker.internet.password();
+
     await visitAndCheck('/register', page);
 
     await page.getByRole('textbox', { name: /email/i }).fill(email);
