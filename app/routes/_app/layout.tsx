@@ -12,7 +12,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 
 export default function AppLayout() {
   return (
-    <div className="flex">
+    <div className="flex flex-col md:flex-row">
       <SideMenu />
       <main className="min-h-screen w-full flex flex-col items-center">
         <Outlet />
