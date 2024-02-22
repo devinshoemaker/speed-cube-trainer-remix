@@ -119,6 +119,7 @@ test.describe('Authentication', () => {
     await page.getByRole('button', { name: /logout/i }).click();
 
     await page.getByRole('link', { name: /sign up/i }).click();
+    await expect(page).toHaveURL(/.*register/);
 
     await page.getByRole('textbox', { name: /email/i }).fill(email);
     await page.getByLabel(/password/i).fill(password);
